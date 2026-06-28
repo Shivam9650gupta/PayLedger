@@ -79,9 +79,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 
 /* STICKY BAR */
-.sbar{background:rgba(var(--act),.06);border-bottom:1px solid rgba(var(--act),.15);padding:9px 20px;display:flex;align-items:center;gap:0;flex-shrink:0;flex-wrap:wrap}
-.sb-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:2px 16px}
-.sb-item:first-child{padding-left:0}
+.sbar{background:rgba(var(--act),.06);border-bottom:1px solid rgba(var(--act),.15);padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:0;flex-shrink:0;flex-wrap:wrap}
+.sb-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:2px 22px}
 .sb-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);line-height:1}
 .sb-val{font-size:15px;font-weight:800;color:var(--t1);letter-spacing:-.01em;line-height:1.1}
 .sb-sub{font-size:9.5px;color:var(--t3);font-weight:600;white-space:nowrap;line-height:1}
@@ -298,7 +297,8 @@ tr.dr.open{background:rgba(var(--act),.06)}
   .sb-item{padding:2px 10px}
   .sb-item:first-child{padding-left:0}
   .sb-due{margin-left:0;width:100%;padding-left:0;margin-top:4px}
-  .kgrid,.crow,.crow3{grid-template-columns:1fr!important}
+  .kgrid{grid-template-columns:1fr 1fr!important}
+  .crow,.crow3{grid-template-columns:1fr!important}
   .statrow{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
   .cw{height:160px!important}
   .trt{flex-wrap:wrap}
@@ -313,7 +313,7 @@ tr.dr.open{background:rgba(var(--act),.06)}
   <div class="pv-panel">
     <div class="pv-head"><span>Card due-date reminders</span><span class="pv-x" onclick="closeSettings()">✕</span></div>
     <div class="pv-scroll">
-      <div class="set-note">Pick a due date for each card — the dashboard repeats the reminder every month on that day and shows it on unpaid cards. Stored only in this browser.</div>
+      <div class="set-note">Enter the due <b>day of the month</b> (1–31) for each card — the reminder repeats every month (and year) on that day and shows on unpaid cards. Stored only in this browser.</div>
       <div id="setCards"></div>
       <div class="set-row"><label>Warn when due within</label><div><input type="number" min="1" max="28" id="setWarn" class="set-num"/> <span style="color:var(--t3);font-size:11px">days</span></div></div>
       <button class="lbtn" style="margin-top:14px;width:100%" onclick="saveSettings()">Save reminders</button>
@@ -373,8 +373,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
       <div class="sb-item clk" title="Click to preview this month's spends" onclick="spendPreview('month')"><span class="sb-label">This month</span><span class="sb-val" id="sMonth">—</span><span class="sb-sub" id="sMonthSub"></span></div>
       <div class="sb-sep"></div>
       <div class="sb-item" title="All bank credits minus all bank debits (all loaded transactions). Excludes credit-card spend."><span class="sb-label">Net flow</span><span class="sb-val" id="sNet">—</span><span class="sb-sub" id="sNetSub"></span></div>
-      <div class="sb-sep"></div>
-      <div class="sb-due" id="sDueWrap"></div>
     </div>
 
     <div class="topbar">
@@ -1032,16 +1030,6 @@ function updateStickyBar(){
   document.getElementById("sNet").textContent=(net>=0?"+":"")+fmtK(net);
   document.getElementById("sNet").style.color=net>=0?"var(--green)":"var(--red)";
   document.getElementById("sNetSub").textContent=net>=0?"Inflow · all-time":"Outflow · all-time";
-  // Due breakdown by card — consistent pills, amount when due, ✓ when clear
-  const dueWrap=document.getElementById("sDueWrap");
-  const totalDue=ccAll.filter(r=>r.paid==="No").reduce((s,r)=>s+r.amount,0);
-  let html=`<span class="sb-label">CC Due</span><span class="sb-val" style="color:${totalDue>0?"var(--red)":"var(--green)"}">${totalDue>0?fmtK(totalDue):"All clear"}</span><div class="sb-sep"></div>`;
-  CC_CARDS.forEach(card=>{
-    const amt=ccAll.filter(r=>r.card===card&&r.paid==="No").reduce((s,r)=>s+r.amount,0);
-    if(amt>0)html+=`<span class="sb-chip due"><span class="c-name">${card}</span>${fmtK(amt)}</span>`;
-    else html+=`<span class="sb-chip clear"><span class="c-name">${card}</span>✓</span>`;
-  });
-  dueWrap.innerHTML=html;
 }
 /* Spend preview modal — itemised list for Today / This month, split by Bank & CC */
 function spendPreview(scope){
@@ -1064,24 +1052,23 @@ function spendPreview(scope){
 function closePreview(){document.getElementById("previewModal").style.display="none";}
 function openSettings(){
   document.getElementById("setCards").innerHTML=CC_CARDS.map(c=>{
-    const cfg=dueCfg[c];
-    const val=(cfg&&cfg.day)?ymd(nextDueDate(cfg.day)):"";   // prefill with the upcoming due date
-    const hint=(cfg&&cfg.day)?`every ${cfg.day}${ord(cfg.day)}`:"not set";
-    return`<div class="set-row"><label>${c}<span class="set-hint" id="setHint_${c}">${hint}</span></label><div><input type="date" class="set-date" id="setDate_${c}" value="${val}" onchange="setHintUpd('${c}')"/></div></div>`;
+    const cfg=dueCfg[c];const day=(cfg&&cfg.day)||"";
+    const hint=(cfg&&cfg.day)?`every ${cfg.day}${ord(cfg.day)} · monthly`:"not set";
+    return`<div class="set-row"><label>${c}<span class="set-hint" id="setHint_${c}">${hint}</span></label><div><span style="color:var(--t3);font-size:11px;margin-right:5px">day</span><input type="number" inputmode="numeric" min="1" max="31" class="set-num" id="setDay_${c}" value="${day}" placeholder="–" oninput="setHintUpd('${c}')"/></div></div>`;
   }).join("");
   document.getElementById("setWarn").value=dueWarn;
   document.getElementById("settingsModal").style.display="flex";
 }
 function ord(n){const s=["th","st","nd","rd"],v=n%100;return s[(v-20)%10]||s[v]||s[0];}
 function setHintUpd(c){
-  const v=document.getElementById("setDate_"+c).value;
+  const v=parseInt(document.getElementById("setDay_"+c).value);
   const h=document.getElementById("setHint_"+c);
-  if(v){const d=parseInt(v.split("-")[2]);h.textContent=`every ${d}${ord(d)}`;}else h.textContent="not set";
+  h.textContent=(v>=1&&v<=31)?`every ${v}${ord(v)} · monthly`:"not set";
 }
 function closeSettings(){document.getElementById("settingsModal").style.display="none";}
 function saveSettings(){
   const cfg={};
-  CC_CARDS.forEach(c=>{const v=document.getElementById("setDate_"+c).value;if(v){const day=parseInt(v.split("-")[2]);if(day>=1&&day<=31)cfg[c]={day};}});
+  CC_CARDS.forEach(c=>{const v=parseInt(document.getElementById("setDay_"+c).value);if(v>=1&&v<=31)cfg[c]={day:v};});
   dueCfg=cfg;localStorage.setItem(DUEK,JSON.stringify(cfg));
   const w=parseInt(document.getElementById("setWarn").value);dueWarn=(w>=1&&w<=28)?w:5;localStorage.setItem("pl_duewarn3",dueWarn);
   closeSettings();toast("✓ Reminders saved");
