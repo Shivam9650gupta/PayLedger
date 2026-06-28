@@ -264,11 +264,59 @@ tr.dr.open{background:rgba(var(--act),.06)}
 .pv-sub{font-size:10px;color:var(--t3)}
 .pv-amt{font-size:13px;font-weight:700;white-space:nowrap}
 .pv-empty{font-size:11px;color:var(--t3);padding:6px 2px}
+/* due-date badges */
+.due-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;margin-top:5px;display:inline-block;letter-spacing:.02em}
+.dd-red{background:rgba(239,68,68,.16);color:#f87171}
+.dd-amber{background:rgba(245,158,11,.16);color:#fbbf24}
+.dd-ok{background:rgba(var(--wt),.07);color:var(--t3)}
+.dd-set{background:rgba(var(--act),.14);color:var(--ac);cursor:pointer}
+/* settings modal rows */
+.set-note{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:12px}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(var(--wt),.06)}
+.set-row label{font-size:12px;font-weight:700;color:var(--t1)}
+.set-num{width:64px;font-size:12px;padding:5px 8px;border-radius:7px;border:1px solid rgba(var(--wt),.12);background:rgba(var(--wt),.04);color:var(--t1);font-family:inherit;outline:none;text-align:center}
+.set-num:focus{border-color:var(--ac)}
+
+/* ===== MOBILE ===== */
+@media (max-width:760px){
+  html,body{overflow:auto}
+  .app{flex-direction:column;height:auto;min-height:100vh}
+  .sidebar{width:100%!important;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;padding:8px 10px;border-right:none;border-bottom:1px solid rgba(var(--wt),.07)}
+  .slogo,.ssec{display:none}
+  .snav{flex-direction:row;gap:4px;padding:0}
+  .nit{white-space:nowrap;padding:7px 11px;font-size:12px}
+  .sfooter{margin:0 0 0 auto;padding:0;border:none}
+  .suname,.surole{display:none}
+  .suser{gap:6px}
+  .main{overflow:visible}
+  .content{padding:12px 12px 40px;overflow:visible}
+  .topbar{flex-wrap:wrap;gap:8px;padding:10px 12px}
+  .sbar{padding:9px 12px;gap:0;row-gap:8px}
+  .sb-item{padding:2px 10px}
+  .sb-item:first-child{padding-left:0}
+  .sb-due{margin-left:0;width:100%;padding-left:0;margin-top:4px}
+  .kgrid,.crow,.crow3{grid-template-columns:1fr!important}
+  .statrow{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+  .cw{height:160px!important}
+  .trt{flex-wrap:wrap}
+  .pv-panel{max-height:88vh}
+}
 </style>
 </head>
 <body>
 <div class="hm-tooltip" id="hmTip"></div>
 <div class="toast" id="toast"></div>
+<div class="pv-modal" id="settingsModal" onclick="if(event.target===this)closeSettings()">
+  <div class="pv-panel">
+    <div class="pv-head"><span>Card due-date reminders</span><span class="pv-x" onclick="closeSettings()">✕</span></div>
+    <div class="pv-scroll">
+      <div class="set-note">Set the monthly statement due day for each card. The dashboard shows a "due in N days" reminder on unpaid cards. Stored only in this browser.</div>
+      <div id="setCards"></div>
+      <div class="set-row"><label>Warn when due within</label><div><input type="number" min="1" max="28" id="setWarn" class="set-num"/> <span style="color:var(--t3);font-size:11px">days</span></div></div>
+      <button class="lbtn" style="margin-top:14px;width:100%" onclick="saveSettings()">Save reminders</button>
+    </div>
+  </div>
+</div>
 <div class="pv-modal" id="previewModal" onclick="if(event.target===this)closePreview()">
   <div class="pv-panel">
     <div class="pv-head"><span id="pvTitle">Spends</span><span class="pv-x" onclick="closePreview()">✕</span></div>
@@ -336,6 +384,7 @@ tr.dr.open{background:rgba(var(--act),.06)}
           <option value="rose">Rose</option>
           <option value="light">Light</option>
         </select>
+        <button class="tbtn" onclick="openSettings()" title="Settings">⚙</button>
         <button class="tbtn" onclick="loadData()">↻ Refresh</button>
       </div>
     </div>
@@ -621,6 +670,29 @@ const COLS=["#6c63ff","#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const CC_CARDS=["ICICI","HDFC","SBI","Kotak","RBL"];
 
+/* ===== CARD DUE-DATE SETTINGS (configured on the dashboard, stored locally) ===== */
+const DUEK="pl_duedays3";
+let dueCfg=(()=>{try{return JSON.parse(localStorage.getItem(DUEK))||{};}catch(e){return{};}})();  // {ICICI:{day:15}, ...}
+let dueWarn=parseInt(localStorage.getItem("pl_duewarn3"))||5;
+function nextDueDate(day){
+  if(!day)return null;
+  const n=new Date();n.setHours(0,0,0,0);
+  let d=new Date(n.getFullYear(),n.getMonth(),day,0,0,0,0);
+  if(d<n)d=new Date(n.getFullYear(),n.getMonth()+1,day,0,0,0,0);  // this month's date passed -> next month
+  return d;
+}
+function daysUntil(d){if(!d)return null;const n=new Date();n.setHours(0,0,0,0);return Math.round((d-n)/86400000);}
+function dueBadge(card){
+  const cfg=dueCfg[card];if(!cfg||!cfg.day)return null;
+  const dd=daysUntil(nextDueDate(cfg.day));
+  let txt,cls;
+  if(dd===0){txt="Due today";cls="dd-red";}
+  else if(dd<=dueWarn){txt=`Due in ${dd}d`;cls="dd-red";}
+  else if(dd<=dueWarn*2){txt=`Due in ${dd}d`;cls="dd-amber";}
+  else{txt=`Due in ${dd}d`;cls="dd-ok";}
+  return{txt,cls,days:dd};
+}
+
 /* ===== THEME RUNTIME (charts read concrete colors, not CSS vars) ===== */
 const THK="pl_theme3";
 let TXT="241,245,249";   // chart axis/legend text triplet
@@ -753,6 +825,12 @@ function pd(str){
   const d=new Date(str);return isNaN(d)?null:d;
 }
 function ymd(d){if(!d)return"";return d.getFullYear()+"-"+(d.getMonth()+1).toString().padStart(2,"0")+"-"+d.getDate().toString().padStart(2,"0");}
+/* full datetime (ms) — uses the bank Time column when present; CC has date only */
+function pdt(r){
+  const d=pd(r.date);if(!d)return 0;
+  if(r.time){const m=r.time.match(/(\d{1,2}):(\d{2})\s*(am|pm)?/i);if(m){let h=parseInt(m[1])%12;if(/pm/i.test(m[3]||""))h+=12;d.setHours(h,parseInt(m[2]),0,0);}}
+  return d.getTime();
+}
 function ago(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-n);return d;}
 function fmtD(str){const d=pd(str);if(!d)return str;return d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"2-digit"});}
 function dc(id){if(ch[id]){ch[id].destroy();delete ch[id];}}
@@ -968,8 +1046,8 @@ function spendPreview(scope){
   else{from=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);to=new Date();to.setHours(23,59,59,999);title="This month's spends";}
   const{bank,cc,bankT,ccT,total}=spendInWindow(from,to);
   const row=(label,sub,amt,col)=>`<div class="pv-row"><div class="pv-rl"><span class="pv-nm">${label}</span><span class="pv-sub">${sub}</span></div><span class="pv-amt" style="color:${col}">${fmt(amt)}</span></div>`;
-  const bankRows=[...bank].sort((a,b)=>b.amount-a.amount).map(r=>row(exM(r.raw)||r.bank,r.bank+" · "+fmtD(r.date),r.amount,"var(--red)")).join("")||`<div class="pv-empty">No bank spends</div>`;
-  const ccRows=[...cc].sort((a,b)=>b.amount-a.amount).map(r=>row(exM(r.raw||r.info)||r.card,r.card+" · "+fmtD(r.date),r.amount,"#a5b4fc")).join("")||`<div class="pv-empty">No card spends</div>`;
+  const bankRows=[...bank].sort((a,b)=>pdt(b)-pdt(a)).map(r=>row(exM(r.raw)||r.bank,r.bank+" · "+fmtD(r.date)+(r.time?" · "+r.time:""),r.amount,"var(--red)")).join("")||`<div class="pv-empty">No bank spends</div>`;
+  const ccRows=[...cc].sort((a,b)=>{const dd=(pd(b.date)||0)-(pd(a.date)||0);return dd!==0?dd:(b.idx-a.idx);}).map(r=>row(exM(r.raw||r.info)||r.card,r.card+" · "+fmtD(r.date),r.amount,"#a5b4fc")).join("")||`<div class="pv-empty">No card spends</div>`;
   document.getElementById("pvTitle").textContent=title;
   document.getElementById("pvBody").innerHTML=
     `<div class="pv-tot"><div><span class="pv-tl">Total</span><span class="pv-tv">${fmt(total)}</span></div>
@@ -979,6 +1057,23 @@ function spendPreview(scope){
   document.getElementById("previewModal").style.display="flex";
 }
 function closePreview(){document.getElementById("previewModal").style.display="none";}
+function openSettings(){
+  document.getElementById("setCards").innerHTML=CC_CARDS.map(c=>{
+    const day=(dueCfg[c]&&dueCfg[c].day)||"";
+    return`<div class="set-row"><label>${c}</label><div><span style="color:var(--t3);font-size:11px">day</span> <input type="number" min="1" max="31" class="set-num" id="setDay_${c}" value="${day}" placeholder="–"/></div></div>`;
+  }).join("");
+  document.getElementById("setWarn").value=dueWarn;
+  document.getElementById("settingsModal").style.display="flex";
+}
+function closeSettings(){document.getElementById("settingsModal").style.display="none";}
+function saveSettings(){
+  const cfg={};
+  CC_CARDS.forEach(c=>{const v=parseInt(document.getElementById("setDay_"+c).value);if(v>=1&&v<=31)cfg[c]={day:v};});
+  dueCfg=cfg;localStorage.setItem(DUEK,JSON.stringify(cfg));
+  const w=parseInt(document.getElementById("setWarn").value);dueWarn=(w>=1&&w<=28)?w:5;localStorage.setItem("pl_duewarn3",dueWarn);
+  closeSettings();toast("✓ Reminders saved");
+  if(token){updateStickyBar();applyF();reRenderActive();}
+}
 
 /* ALERT BANNER — total + unpaid cards first, clear cards collapsed (reusable) */
 function renderAlert(ccExp,bannerId="abanner",bodyId="abody",totalId="abTotal"){
@@ -994,11 +1089,12 @@ function renderAlert(ccExp,bannerId="abanner",bodyId="abody",totalId="abTotal"){
     if(amt>0)due.push({card,amt,cnt});else clear.push(card);
   });
   due.sort((a,b)=>b.amt-a.amt);
-  const dueCards=due.map(d=>`<div class="due-card" onclick="dueCardClick('${d.card}')" style="cursor:pointer">
+  const dueCards=due.map(d=>{const b=dueBadge(d.card);return`<div class="due-card" onclick="dueCardClick('${d.card}')" style="cursor:pointer">
       <div class="due-card-name">${d.card}</div>
       <div class="due-card-amt">${fmt(d.amt)}</div>
       <div class="due-card-cnt">${d.cnt} pending</div>
-    </div>`).join("");
+      ${b?`<div class="due-badge ${b.cls}">${b.txt}</div>`:`<div class="due-badge dd-set" onclick="event.stopPropagation();openSettings()">+ set due date</div>`}
+    </div>`}).join("");
   const clearStrip=clear.length?`<div class="clear-strip">${clear.map(c=>`<span class="clear-pill">${c} ✓</span>`).join("")}</div>`:"";
   body.innerHTML=dueCards+clearStrip;
   const tot=document.getElementById(totalId);if(tot)tot.innerHTML=`<span>Total due</span>${fmt(totalUnpaid)}`;
@@ -1234,7 +1330,7 @@ function rTT(){
   const q=(document.getElementById("tsrch")?.value||"").toLowerCase();
   let rows=tF==="all"?txn:txn.filter(r=>r.type===tF);
   if(q)rows=rows.filter(r=>(r.raw+r.bank+r.ref+r.amount).toLowerCase().includes(q));
-  rows=[...rows].sort((a,b)=>(pd(b.date)||0)-(pd(a.date)||0));
+  rows=[...rows].sort((a,b)=>pdt(b)-pdt(a));
   const body=document.getElementById("tb");
   if(!rows.length){body.innerHTML=`<tr><td colspan="5" class="empty">No transactions found</td></tr>`;return;}
   body.innerHTML=rows.map((r,i)=>{const open=exT===i;return`<tr class="dr ${open?"open":""}" onclick="togT(${i})"><td class="dc2">${fmtD(r.date)}</td><td class="mc">${exM(r.raw)}<span class="btag">${r.bank}</span></td><td style="color:var(--t3);font-size:10px">${r.bank}</td><td><span class="badge ${r.type==="Debit"?"bd":"bc"}">${r.type}</span></td><td class="${r.type==="Debit"?"amd":"amc"}">${r.type==="Debit"?"−":"+"}${fmt(r.amount)}</td></tr>${open?`<tr><td colspan="5"><div class="rawbox"><div class="rawlbl">Raw SMS</div><div class="rawtxt">${r.raw||"—"}</div></div></td></tr>`:""}`}).join("");
@@ -1270,7 +1366,7 @@ function rCT(){
   const q=(document.getElementById("csrch")?.value||"").toLowerCase();
   let rows=cF2==="all"?ccExp:ccExp.filter(r=>r.paid===cF2);
   if(q)rows=rows.filter(r=>(r.info+r.card+r.amount+r.raw).toLowerCase().includes(q));
-  rows=[...rows].sort((a,b)=>(pd(b.date)||0)-(pd(a.date)||0));
+  rows=[...rows].sort((a,b)=>{const dd=(pd(b.date)||0)-(pd(a.date)||0);return dd!==0?dd:(b.idx-a.idx);});
   const body=document.getElementById("cb");
   if(!rows.length){body.innerHTML=`<tr><td colspan="6" class="empty">No expenses found</td></tr>`;return;}
   body.innerHTML=rows.map((r,i)=>{const open=exC===i;const pc=r.paid==="Yes"?"paid":"unpaid";return`<tr class="dr ${open?"open":""}" onclick="togC(${i})">
