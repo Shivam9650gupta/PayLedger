@@ -278,6 +278,25 @@ tr.dr.open{background:rgba(var(--act),.06)}
 .set-date{font-size:12px;padding:6px 9px;border-radius:7px;border:1px solid rgba(var(--wt),.12);background:rgba(var(--wt),.04);color:var(--t1);font-family:inherit;outline:none;color-scheme:dark}
 .set-date:focus{border-color:var(--ac)}
 .set-hint{display:block;font-size:10px;font-weight:600;color:var(--t3);margin-top:2px}
+/* duplicate flag */
+.dupb{display:inline-block;font-size:9px;font-weight:800;color:#fbbf24;background:rgba(245,158,11,.15);padding:1px 6px;border-radius:10px;margin-left:7px;vertical-align:middle}
+.rtime{font-size:9px;color:var(--t3);margin-left:6px}
+/* recurring list */
+.rec-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 2px;border-bottom:1px solid rgba(var(--wt),.05)}
+.rec-l{display:flex;flex-direction:column;gap:1px;min-width:0}
+.rec-nm{font-size:12px;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px}
+.rec-sub{font-size:10px;color:var(--t3)}
+.rec-amt{font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap}
+.rec-mo{font-size:9px;color:var(--t3);font-weight:600;margin-left:1px}
+/* category rules */
+.set-sec2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);font-weight:700;margin:20px 0 8px;padding-top:16px;border-top:1px solid rgba(var(--wt),.08)}
+.set-rule-add{display:flex;gap:7px;align-items:center;margin-top:10px}
+.cr-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(var(--wt),.05)}
+.cr-kw{font-size:12px;font-weight:700;color:var(--t1)}
+.cr-arrow{color:var(--t3);font-size:11px}
+.cr-cat{font-size:11px;color:var(--ac);background:rgba(var(--act),.12);padding:2px 8px;border-radius:20px;font-weight:700}
+.cr-x{margin-left:auto;color:var(--t3);cursor:pointer;font-size:12px}
+.cr-x:hover{color:var(--red)}
 
 /* ===== MOBILE ===== */
 @media (max-width:760px){
@@ -285,11 +304,14 @@ tr.dr.open{background:rgba(var(--act),.06)}
   .app{flex-direction:column;height:auto;min-height:100vh}
   .sidebar{width:100%!important;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;padding:8px 10px;border-right:none;border-bottom:1px solid rgba(var(--wt),.07)}
   .slogo,.ssec{display:none}
-  .snav{flex-direction:row;gap:4px;padding:0}
-  .nit{white-space:nowrap;padding:7px 11px;font-size:12px}
-  .sfooter{margin:0 0 0 auto;padding:0;border:none}
-  .suname,.surole{display:none}
+  .snav{flex:1;flex-direction:row;gap:3px;padding:0;min-width:0}
+  .nit{flex:1;justify-content:center;white-space:nowrap;padding:7px 5px;font-size:11px;gap:0}
+  .nit .nic{display:none}
+  .sfooter{margin:0 0 0 6px;padding:0;border:none;flex-shrink:0}
+  .suname,.surole,.sav{display:none}
   .suser{gap:6px}
+  .abanner-body{flex-direction:column;align-items:stretch}
+  .due-card{min-width:0;width:100%}
   .main{overflow:visible}
   .content{padding:12px 12px 40px;overflow:visible}
   .topbar{flex-wrap:wrap;gap:8px;padding:10px 12px}
@@ -317,12 +339,22 @@ tr.dr.open{background:rgba(var(--act),.06)}
       <div id="setCards"></div>
       <div class="set-row"><label>Warn when due within</label><div><input type="number" min="1" max="28" id="setWarn" class="set-num"/> <span style="color:var(--t3);font-size:11px">days</span></div></div>
       <button class="lbtn" style="margin-top:14px;width:100%" onclick="saveSettings()">Save reminders</button>
+      <div class="set-sec2">Category rules</div>
+      <div class="set-note">Force any transaction whose text contains a keyword into a category — handy for fixing mislabelled spends. Applied instantly, stored in this browser.</div>
+      <div id="catRulesList"></div>
+      <div class="set-rule-add">
+        <input id="crKw" class="set-num" style="flex:1;text-align:left" placeholder="keyword (e.g. zomato)"/>
+        <input id="crCat" class="set-num" style="flex:1;text-align:left" placeholder="category" list="catOpts"/>
+        <button class="tbtn" onclick="addCatRule()" style="padding:6px 12px">+ Add</button>
+      </div>
+      <datalist id="catOpts"><option>Shopping</option><option>Food</option><option>Entertainment</option><option>Travel</option><option>Recharge</option><option>UPI Transfer</option><option>Utilities</option><option>Others</option></datalist>
     </div>
   </div>
 </div>
 <div class="pv-modal" id="previewModal" onclick="if(event.target===this)closePreview()">
   <div class="pv-panel">
-    <div class="pv-head"><span id="pvTitle">Spends</span><span class="pv-x" onclick="closePreview()">✕</span></div>
+    <div class="pv-head"><span id="pvTitle">Spends</span><div style="display:flex;gap:8px;align-items:center"><button class="tbtn" onclick="exportPreview()" style="padding:4px 9px">↓ CSV</button><span class="pv-x" onclick="closePreview()">✕</span></div></div>
+    <div style="padding:12px 18px 0"><input id="pvSearch" class="set-num" placeholder="Search these spends…" oninput="renderPreviewList()" style="width:100%;text-align:left"/></div>
     <div class="pv-scroll" id="pvBody"></div>
   </div>
 </div>
@@ -651,6 +683,10 @@ tr.dr.open{background:rgba(var(--act),.06)}
           <div class="card nm"><div class="chdr"><span class="ctitle">All categories</span></div><div class="cw" style="height:190px"><canvas id="cAllCat"></canvas></div></div>
           <div class="card nm"><div class="chdr"><span class="ctitle">Bank vs CC monthly</span><div class="leg"><div class="li"><div class="ld" style="background:#6c63ff"></div>Bank</div><div class="li"><div class="ld" style="background:#3b82f6"></div>CC</div></div></div><div class="cw" style="height:190px"><canvas id="cBvC"></canvas></div></div>
         </div>
+        <div class="crow">
+          <div class="card nm"><div class="chdr"><span class="ctitle">This month vs last month — by category</span><div class="leg"><div class="li"><div class="ld" style="background:var(--ac)"></div>This</div><div class="li"><div class="ld" style="background:rgba(var(--wt),.25)"></div>Last</div></div></div><div class="cw" style="height:210px"><canvas id="cMoM"></canvas></div></div>
+          <div class="card nm"><div class="chdr"><span class="ctitle">Recurring &amp; subscriptions</span><span class="chart-hint" id="recTotal"></span></div><div id="recList" style="margin-top:8px;max-height:210px;overflow:auto"></div></div>
+        </div>
         <div class="card">
           <div class="chdr"><span class="ctitle">Spending heatmap — full period</span><span class="chart-hint">Hover for daily breakdown · Click to filter</span></div>
           <div class="hmwrap" id="hm2"></div>
@@ -694,6 +730,47 @@ function dueBadge(card){
   else if(dd<=dueWarn*2){txt=`Due ${ds} · ${dd}d`;cls="dd-amber";}
   else{txt=`Due ${ds} · ${dd}d`;cls="dd-ok";}
   return{txt,cls,days:dd};
+}
+
+/* ===== USER CATEGORY RULES (keyword -> category, stored locally) ===== */
+const CATK="pl_catrules3";
+let catRules=(()=>{try{return JSON.parse(localStorage.getItem(CATK))||[];}catch(e){return[];}})();  // [{kw,cat}]
+
+/* ===== DUPLICATE DETECTION: same amount + same day on BOTH bank and card ===== */
+function computeDuplicates(){
+  const map={};
+  txnAll.filter(r=>r.type==="Debit").forEach(r=>{r._dup=false;const d=pd(r.date);if(!d)return;const k=ymd(d)+"|"+Math.round(r.amount);(map[k]=map[k]||{bank:[],cc:[]}).bank.push(r);});
+  ccAll.forEach(r=>{r._dup=false;const d=pd(r.date);if(!d)return;const k=ymd(d)+"|"+Math.round(r.amount);(map[k]=map[k]||{bank:[],cc:[]}).cc.push(r);});
+  Object.values(map).forEach(g=>{if(g.bank.length&&g.cc.length)[...g.bank,...g.cc].forEach(r=>r._dup=true);});
+}
+
+/* ===== RECURRING / SUBSCRIPTION DETECTION ===== */
+function recurringList(){
+  const items=[...txnAll.filter(r=>r.type==="Debit").map(r=>({m:exM(r.raw),date:r.date,amount:r.amount,src:"Bank"})),
+               ...ccAll.map(r=>({m:exM(r.raw||r.info),date:r.date,amount:r.amount,src:"CC"}))];
+  const groups={};
+  items.forEach(r=>{const key=(r.m||"").toLowerCase().replace(/[^a-z0-9@. ]/g,"").trim();if(!key||key==="—")return;const d=pd(r.date);if(!d)return;const mk=d.getFullYear()+"-"+d.getMonth();
+    if(!groups[key])groups[key]={name:r.m,src:r.src,months:{}};
+    groups[key].months[mk]=(groups[key].months[mk]||0)+r.amount;});
+  const rec=[];
+  Object.values(groups).forEach(g=>{
+    const vals=Object.values(g.months);if(vals.length<2)return;            // seen in 2+ distinct months
+    const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+    if(!vals.every(v=>Math.abs(v-avg)<=Math.max(avg*0.35,50)))return;       // amounts roughly consistent
+    rec.push({name:g.name,src:g.src,months:vals.length,monthly:Math.round(avg)});
+  });
+  return rec.sort((a,b)=>b.monthly-a.monthly);
+}
+
+/* ===== MONTH vs MONTH BY CATEGORY ===== */
+function momByCategory(){
+  const n=new Date(),cm=n.getMonth(),cy=n.getFullYear(),pm=cm===0?11:cm-1,py=cm===0?cy-1:cy;
+  const cur={},prev={};
+  const add=(d,c,amt)=>{if(d.getMonth()===cm&&d.getFullYear()===cy)cur[c]=(cur[c]||0)+amt;else if(d.getMonth()===pm&&d.getFullYear()===py)prev[c]=(prev[c]||0)+amt;};
+  txnAll.filter(r=>r.type==="Debit").forEach(r=>{const d=pd(r.date);if(d)add(d,cat(r.raw,""),r.amount);});
+  ccAll.forEach(r=>{const d=pd(r.date);if(d)add(d,cat(r.raw,r.info),r.amount);});
+  const cats=[...new Set([...Object.keys(cur),...Object.keys(prev)])];
+  return cats.map(c=>({cat:c,cur:Math.round(cur[c]||0),prev:Math.round(prev[c]||0)})).sort((a,b)=>(b.cur+b.prev)-(a.cur+a.prev));
 }
 
 /* ===== THEME RUNTIME (charts read concrete colors, not CSS vars) ===== */
@@ -797,6 +874,7 @@ async function loadData(){
 function proc(j){
   txnAll=j.transactions.slice(1).map(r=>({date:s(r[0]),time:s(r[1]),type:s(r[2]),amount:parseFloat(r[3])||0,bank:s(r[4]),ref:s(r[5]),raw:s(r[6])})).filter(r=>r.date&&r.date!="undefined");
   ccAll=j.cc_expenses.slice(1).map((r,i)=>({idx:i,date:s(r[0]),amount:parseFloat(r[1])||0,card:s(r[2]),paid:s(r[3]),info:s(r[4]),raw:s(r[5]),remarks:s(r[6])})).filter(r=>r.date&&r.date!="undefined");
+  computeDuplicates();
   populateYearDropdowns();
   syncFilterLocks();
   document.getElementById("lstate").style.display="none";
@@ -841,6 +919,7 @@ function gc(i){return COLS[i%COLS.length];}
 function co(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;}
 function cat(raw,info){
   const t=(raw||info||"").toLowerCase();
+  for(const r of catRules){if(r.kw&&t.includes(r.kw.toLowerCase()))return r.cat;}  // user overrides
   if(/amazon|flipkart|myntra|meesho|nykaa/i.test(t))return"Shopping";
   if(/swiggy|zomato|domino|mcdonald|kfc|dunzo/i.test(t))return"Food";
   if(/bookmyshow|netflix|prime|hotstar|spotify|pvr/i.test(t))return"Entertainment";
@@ -1032,22 +1111,45 @@ function updateStickyBar(){
   document.getElementById("sNetSub").textContent=net>=0?"Inflow · all-time":"Outflow · all-time";
 }
 /* Spend preview modal — itemised list for Today / This month, split by Bank & CC */
+let pvData=null;
 function spendPreview(scope){
   let from,to,title;
   const now=new Date();
   if(scope==="today"){from=new Date();from.setHours(0,0,0,0);to=new Date();to.setHours(23,59,59,999);title="Today's spends";}
   else{from=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);to=new Date();to.setHours(23,59,59,999);title="This month's spends";}
-  const{bank,cc,bankT,ccT,total}=spendInWindow(from,to);
+  const{bank,cc}=spendInWindow(from,to);
+  pvData={scope,title,bank,cc};
+  document.getElementById("pvTitle").textContent=title;
+  const sb=document.getElementById("pvSearch");if(sb)sb.value="";
+  renderPreviewList();
+  document.getElementById("previewModal").style.display="flex";
+}
+function previewFiltered(){
+  if(!pvData)return{bank:[],cc:[]};
+  const q=(document.getElementById("pvSearch")?.value||"").toLowerCase();
+  const f=arr=>q?arr.filter(r=>((exM(r.raw||r.info)||"")+(r.bank||"")+(r.card||"")+r.amount+(r.raw||r.info||"")).toLowerCase().includes(q)):arr;
+  return{bank:f(pvData.bank),cc:f(pvData.cc)};
+}
+function renderPreviewList(){
+  if(!pvData)return;
+  const{bank,cc}=previewFiltered();
+  const bankT=bank.reduce((s,r)=>s+r.amount,0),ccT=cc.reduce((s,r)=>s+r.amount,0),total=bankT+ccT;
   const row=(label,sub,amt,col)=>`<div class="pv-row"><div class="pv-rl"><span class="pv-nm">${label}</span><span class="pv-sub">${sub}</span></div><span class="pv-amt" style="color:${col}">${fmt(amt)}</span></div>`;
   const bankRows=[...bank].sort((a,b)=>pdt(b)-pdt(a)).map(r=>row(exM(r.raw)||r.bank,r.bank+" · "+fmtD(r.date)+(r.time?" · "+r.time:""),r.amount,"var(--red)")).join("")||`<div class="pv-empty">No bank spends</div>`;
   const ccRows=[...cc].sort((a,b)=>{const dd=(pd(b.date)||0)-(pd(a.date)||0);return dd!==0?dd:(b.idx-a.idx);}).map(r=>row(exM(r.raw||r.info)||r.card,r.card+" · "+fmtD(r.date),r.amount,"#a5b4fc")).join("")||`<div class="pv-empty">No card spends</div>`;
-  document.getElementById("pvTitle").textContent=title;
   document.getElementById("pvBody").innerHTML=
     `<div class="pv-tot"><div><span class="pv-tl">Total</span><span class="pv-tv">${fmt(total)}</span></div>
        <div class="pv-split"><span>Bank <b style="color:var(--red)">${fmt(bankT)}</b></span><span>CC <b style="color:#a5b4fc">${fmt(ccT)}</b></span></div></div>
      <div class="pv-sec">Bank · ${bank.length} txns</div>${bankRows}
      <div class="pv-sec">Credit cards · ${cc.length} txns</div>${ccRows}`;
-  document.getElementById("previewModal").style.display="flex";
+}
+function exportPreview(){
+  const{bank,cc}=previewFiltered();
+  let csv="Source,Date,Time,Merchant,Amount\n";
+  const esc=v=>String(v==null?"":v).replace(/"/g,'""');
+  [...bank].sort((a,b)=>pdt(b)-pdt(a)).forEach(r=>csv+=`"Bank","${esc(r.date)}","${esc(r.time)}","${esc(exM(r.raw)||r.bank)}","${r.amount}"\n`);
+  [...cc].sort((a,b)=>(pd(b.date)||0)-(pd(a.date)||0)).forEach(r=>csv+=`"CC","${esc(r.date)}","","${esc(exM(r.raw||r.info)||r.card)}","${r.amount}"\n`);
+  const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download=(pvData&&pvData.scope==="today"?"today":"month")+"_spends.csv";a.click();
 }
 function closePreview(){document.getElementById("previewModal").style.display="none";}
 function openSettings(){
@@ -1057,8 +1159,22 @@ function openSettings(){
     return`<div class="set-row"><label>${c}<span class="set-hint" id="setHint_${c}">${hint}</span></label><div><span style="color:var(--t3);font-size:11px;margin-right:5px">day</span><input type="number" inputmode="numeric" min="1" max="31" class="set-num" id="setDay_${c}" value="${day}" placeholder="–" oninput="setHintUpd('${c}')"/></div></div>`;
   }).join("");
   document.getElementById("setWarn").value=dueWarn;
+  renderCatRules();
   document.getElementById("settingsModal").style.display="flex";
 }
+function renderCatRules(){
+  const el=document.getElementById("catRulesList");if(!el)return;
+  el.innerHTML=catRules.length?catRules.map((r,i)=>`<div class="cr-row"><span class="cr-kw">${r.kw}</span><span class="cr-arrow">→</span><span class="cr-cat">${r.cat}</span><span class="cr-x" onclick="removeCatRule(${i})" title="Remove">✕</span></div>`).join(""):`<div class="pv-empty">No rules yet.</div>`;
+}
+function addCatRule(){
+  const kw=document.getElementById("crKw").value.trim(),c=document.getElementById("crCat").value.trim();
+  if(!kw||!c){toast("Enter both a keyword and a category",true);return;}
+  catRules.push({kw,cat:c});localStorage.setItem(CATK,JSON.stringify(catRules));
+  document.getElementById("crKw").value="";document.getElementById("crCat").value="";
+  renderCatRules();toast("✓ Rule added");
+  if(token){applyF();reRenderActive();}
+}
+function removeCatRule(i){catRules.splice(i,1);localStorage.setItem(CATK,JSON.stringify(catRules));renderCatRules();toast("Rule removed");if(token){applyF();reRenderActive();}}
 function ord(n){const s=["th","st","nd","rd"],v=n%100;return s[(v-20)%10]||s[v]||s[0];}
 function setHintUpd(c){
   const v=parseInt(document.getElementById("setDay_"+c).value);
@@ -1333,7 +1449,7 @@ function rTT(){
   rows=[...rows].sort((a,b)=>pdt(b)-pdt(a));
   const body=document.getElementById("tb");
   if(!rows.length){body.innerHTML=`<tr><td colspan="5" class="empty">No transactions found</td></tr>`;return;}
-  body.innerHTML=rows.map((r,i)=>{const open=exT===i;return`<tr class="dr ${open?"open":""}" onclick="togT(${i})"><td class="dc2">${fmtD(r.date)}</td><td class="mc">${exM(r.raw)}<span class="btag">${r.bank}</span></td><td style="color:var(--t3);font-size:10px">${r.bank}</td><td><span class="badge ${r.type==="Debit"?"bd":"bc"}">${r.type}</span></td><td class="${r.type==="Debit"?"amd":"amc"}">${r.type==="Debit"?"−":"+"}${fmt(r.amount)}</td></tr>${open?`<tr><td colspan="5"><div class="rawbox"><div class="rawlbl">Raw SMS</div><div class="rawtxt">${r.raw||"—"}</div></div></td></tr>`:""}`}).join("");
+  body.innerHTML=rows.map((r,i)=>{const open=exT===i;return`<tr class="dr ${open?"open":""}" onclick="togT(${i})"><td class="dc2">${fmtD(r.date)}${r.time?`<span class="rtime">${r.time}</span>`:""}</td><td class="mc">${exM(r.raw)}${r._dup?`<span class="dupb" title="Possible duplicate — same amount &amp; day also on a card">⚠ dup?</span>`:""}<span class="btag">${r.bank}</span></td><td style="color:var(--t3);font-size:10px">${r.bank}</td><td><span class="badge ${r.type==="Debit"?"bd":"bc"}">${r.type}</span></td><td class="${r.type==="Debit"?"amd":"amc"}">${r.type==="Debit"?"−":"+"}${fmt(r.amount)}</td></tr>${open?`<tr><td colspan="5"><div class="rawbox"><div class="rawlbl">Raw SMS</div><div class="rawtxt">${r.raw||"—"}</div></div></td></tr>`:""}`}).join("");
 }
 function togT(i){exT=exT===i?null:i;rTT();}
 
@@ -1371,7 +1487,7 @@ function rCT(){
   if(!rows.length){body.innerHTML=`<tr><td colspan="6" class="empty">No expenses found</td></tr>`;return;}
   body.innerHTML=rows.map((r,i)=>{const open=exC===i;const pc=r.paid==="Yes"?"paid":"unpaid";return`<tr class="dr ${open?"open":""}" onclick="togC(${i})">
     <td class="dc2">${fmtD(r.date)}</td>
-    <td class="mc">${r.info||"—"}</td>
+    <td class="mc">${r.info||"—"}${r._dup?`<span class="dupb" title="Possible duplicate — same amount &amp; day also on bank">⚠ dup?</span>`:""}</td>
     <td><span class="btag">${r.card}</span></td>
     <td><button class="ptog ${pc}" onclick="event.stopPropagation();togglePaid(${r.idx},'${r.paid}',this)">${r.paid==="Yes"?"✓ Paid":"✗ Unpaid"}</button></td>
     <td style="font-size:10px;color:var(--t2);max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.remarks&&r.remarks!="undefined"?r.remarks:"—"}</td>
@@ -1392,6 +1508,21 @@ function togC(i){exC=exC===i?null:i;rCT();}
 function renderAnalyticsView(){
   const{txn,ccExp}=filtered("apf","adf","adt","ayf","amf","bf","cf");
   rRatio(txn,ccExp);rAvg(txn,ccExp);rCum(txn,ccExp);rAllCat(txn,ccExp);rBvC(txn,ccExp);rHeat(txnAll,ccAll,"hm2");
+  rMoM();renderRecurring();
+}
+function rMoM(){
+  dc("cMoM");const data=momByCategory().filter(d=>d.cur||d.prev).slice(0,7);
+  ch["cMoM"]=new Chart(document.getElementById("cMoM"),{type:"bar",data:{labels:data.map(d=>d.cat),datasets:[
+    {label:"This month",data:data.map(d=>d.cur),backgroundColor:co(TH.ac,.85),borderRadius:4},
+    {label:"Last month",data:data.map(d=>d.prev),backgroundColor:GR(.22),borderRadius:4}
+  ]},options:{...cOpts(),indexAxis:"y",scales:{x:{ticks:{color:AX(.3),font:{size:9},callback:v=>"₹"+Math.round(v).toLocaleString("en-IN")},grid:{color:GR(.03)}},y:{ticks:{color:AX(.45),font:{size:10}},grid:{display:false}}},plugins:{tooltip:{mode:"index",intersect:false,callbacks:{label:ctx=>` ${ctx.dataset.label}: ₹${Math.round(ctx.raw).toLocaleString("en-IN")}`}}}}});
+}
+function renderRecurring(){
+  const rec=recurringList(),el=document.getElementById("recList");
+  const total=rec.reduce((s,r)=>s+r.monthly,0);
+  document.getElementById("recTotal").textContent=rec.length?`~${fmt(total)}/mo · ${rec.length}`:"";
+  if(!rec.length){el.innerHTML=`<div class="pv-empty">No recurring charges detected yet (needs 2+ months of similar charges).</div>`;return;}
+  el.innerHTML=rec.slice(0,12).map(r=>`<div class="rec-row"><div class="rec-l"><span class="rec-nm">${r.name}</span><span class="rec-sub">${r.src} · seen ${r.months} mo</span></div><span class="rec-amt">${fmt(r.monthly)}<span class="rec-mo">/mo</span></span></div>`).join("");
 }
 function rRatio(txn,ccExp){
   dc("cRatio");const deb=Math.round(txn.filter(r=>r.type==="Debit").reduce((s,r)=>s+r.amount,0)),cred=Math.round(txn.filter(r=>r.type==="Credit").reduce((s,r)=>s+r.amount,0)),cc=Math.round(ccExp.reduce((s,r)=>s+r.amount,0));
