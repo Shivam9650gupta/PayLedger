@@ -613,7 +613,7 @@ tr.dr.open{background:rgba(var(--act),.06)}
 
 <script>
 const API="https://script.google.com/macros/s/AKfycbyHDD2uq8BqJ8w9px8szEnmmOEhrBIhNopSXcLf7efwxovSmG9KNcugkGKta6dhlZct/exec";
-const TOK="LnWorqhPfrIcS5_jlB_ukQrjWIfJRNA9WyoqUw6YPDF6u7HQ2__5tQarcFUUcIwV";
+// No secret token in source — it's entered at login and kept only in this browser's local storage.
 const SK="pl_tok3",BK="pl_budget3";
 let token="",txnAll=[],ccAll=[],tF="all",cF2="all",exT=null,exC=null,ch={};
 let budget=parseFloat(localStorage.getItem(BK))||0;
@@ -1155,7 +1155,8 @@ function rHeat(txn,ccExp,tid,days=90){
 
 /* WRITE-BACK */
 async function writeBack(action,extra){
-  const body={action,token:TOK,...extra};
+  if(!token)throw new Error("Not signed in");
+  const body={action,token,...extra};
   // text/plain keeps this a CORS "simple request" — Apps Script can't answer
   // the preflight that application/json would trigger, which silently blocks writes.
   const res=await fetch(API,{method:"POST",body:JSON.stringify(body),headers:{"Content-Type":"text/plain;charset=utf-8"}});
