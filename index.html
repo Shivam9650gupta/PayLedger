@@ -35,7 +35,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(var(--act),.3);border-radius:4px}
-
 /* LOGIN */
 #loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;background-image:radial-gradient(ellipse at 20% 50%,rgba(var(--act),.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%)}
 .lbox{background:rgba(var(--wt),.03);border:1px solid rgba(var(--act),.2);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center;backdrop-filter:blur(20px)}
@@ -50,10 +49,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .lbtn{width:100%;padding:12px;border-radius:9px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(var(--act),.3)}
 .lbtn:hover{opacity:.9}.lbtn:disabled{opacity:.4;cursor:not-allowed}
 .lerr{font-size:11px;color:var(--red);margin-top:10px;min-height:16px}
-
 /* APP */
 .app{display:flex;height:100vh}
-
 /* SIDEBAR */
 .sidebar{width:210px;background:var(--sb);border-right:1px solid rgba(var(--wt),.05);display:flex;flex-direction:column;flex-shrink:0}
 .slogo{display:flex;align-items:center;gap:9px;padding:18px 15px 14px;border-bottom:1px solid rgba(var(--wt),.04)}
@@ -74,10 +71,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .sbts{display:flex;align-items:center;gap:3px;margin-left:auto}
 .sic{font-size:12px;color:var(--t3);cursor:pointer;padding:3px;border-radius:4px;transition:all .15s}
 .sic:hover{color:var(--t1);background:rgba(var(--wt),.06)}
-
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
 /* STICKY BAR */
 .sbar{background:rgba(var(--act),.06);border-bottom:1px solid rgba(var(--act),.15);padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:0;flex-shrink:0;flex-wrap:wrap}
 .sb-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:2px 22px}
@@ -93,7 +88,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .sb-chip.clear{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.2);color:#34d399}
 .sb-item.clk{cursor:pointer;border-radius:9px;transition:background .15s}
 .sb-item.clk:hover{background:rgba(var(--wt),.06)}
-
 /* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid rgba(var(--wt),.05);flex-shrink:0}
 .ttl{font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--t1)}
@@ -101,11 +95,9 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .tbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;border:1px solid rgba(var(--wt),.08);background:rgba(var(--wt),.03);color:var(--t2);font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
 .tbtn:hover{background:rgba(var(--wt),.07);color:var(--t1)}
 .lup{font-size:10px;color:var(--t3)}
-
 /* CONTENT */
 .content{flex:1;overflow-y:auto;padding:14px 18px 32px}
 .view{display:none}.view.active{display:block}
-
 /* FILTER BAR */
 .fbar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:14px;padding:10px 12px;background:rgba(var(--wt),.02);border:1px solid rgba(var(--wt),.06);border-radius:var(--r)}
 .flbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
@@ -116,7 +108,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .dinp{font-size:11px;padding:5px 8px;border-radius:7px;border:1px solid rgba(var(--wt),.08);background:rgba(var(--wt),.04);color:var(--t1);font-family:inherit;outline:none;color-scheme:dark}
 .dinp:focus{border-color:var(--ac)}
 .fsep{width:1px;height:16px;background:rgba(var(--wt),.06);margin:0 2px}
-
 /* ALERT BANNER */
 .abanner{border-radius:var(--r);border:1px solid rgba(239,68,68,.22);background:rgba(239,68,68,.04);margin-bottom:14px;overflow:hidden}
 .abanner-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px;background:rgba(239,68,68,.07)}
@@ -131,7 +122,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 /* clear cards collapse into a quiet inline strip */
 .clear-strip{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding-left:4px}
 .clear-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#34d399;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.16);padding:4px 9px;border-radius:20px}
-
 /* KPI GRID */
 .kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-bottom:14px}
 .kpi{background:rgba(var(--wt),.03);border:1px solid rgba(var(--wt),.07);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden;transition:border-color .2s}
@@ -145,7 +135,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .mom{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:600;margin-top:4px;display:inline-block}
 .mom-up{background:rgba(239,68,68,.15);color:#ef4444}
 .mom-dn{background:rgba(16,185,129,.15);color:#10b981}
-
 /* BUDGET */
 .bcard{background:rgba(var(--wt),.02);border:1px solid rgba(var(--wt),.07);border-radius:var(--r);padding:12px 15px;margin-bottom:14px}
 .bhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
@@ -155,7 +144,6 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .bfill{height:100%;border-radius:3px;transition:width .6s}
 .blbls{display:flex;justify-content:space-between}
 .blbl{font-size:10px;color:var(--t3)}
-
 /* CHARTS */
 .crow{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
 .crow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px}
@@ -168,14 +156,12 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .leg{display:flex;flex-wrap:wrap;gap:6px}
 .li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)}
 .ld{width:7px;height:7px;border-radius:2px;flex-shrink:0}
-
 /* STAT ROW */
 .statrow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .stat{background:rgba(var(--wt),.02);border:1px solid rgba(var(--wt),.07);border-radius:var(--r);padding:10px 13px;flex:1;min-width:110px}
 .stlbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;font-weight:600}
 .stval{font-size:16px;font-weight:700;letter-spacing:-.02em}
 .stsub{font-size:10px;color:var(--t3);margin-top:2px}
-
 /* CAT LIST */
 .catlist{display:flex;flex-direction:column;gap:6px}
 .catitem{display:flex;align-items:center;gap:7px}
@@ -183,16 +169,13 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-
 .catbg{flex:1;height:5px;background:rgba(var(--wt),.06);border-radius:3px;overflow:hidden}
 .catfill{height:100%;border-radius:3px;transition:width .5s}
 .catamt{font-size:11px;font-weight:600;color:var(--t1);width:72px;text-align:right;flex-shrink:0}
-
 /* HEATMAP */
 .hmwrap{overflow-x:auto;padding-bottom:4px}
 .hm-tooltip{position:fixed;background:rgba(13,15,34,.95);border:1px solid rgba(var(--act),.3);border-radius:7px;padding:7px 10px;font-size:11px;color:var(--t1);pointer-events:none;z-index:999;opacity:0;transition:opacity .15s;white-space:nowrap}
-
 /* TABS */
 .tabs{display:flex;gap:3px}
 .tab{font-size:11px;padding:4px 11px;border-radius:20px;border:1px solid rgba(var(--wt),.08);background:transparent;color:var(--t2);cursor:pointer;font-family:inherit;transition:all .15s;font-weight:500}
 .tab:hover{color:var(--t1)}.tab.active{background:rgba(var(--act),.25);color:var(--t1);border-color:rgba(var(--act),.4)}
-
 /* TABLE */
 .fcard{background:rgba(var(--wt),.02);border:1px solid rgba(var(--wt),.07);border-radius:var(--r);padding:13px 15px;margin-bottom:11px}
 .shdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
@@ -218,7 +201,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
 .srch{display:flex;align-items:center;gap:5px;background:rgba(var(--wt),.04);border:1px solid rgba(var(--wt),.07);border-radius:7px;padding:5px 9px;min-width:150px}
 .srch input{background:none;border:none;color:var(--t1);font-size:11px;outline:none;width:100%}
 .srch input::placeholder{color:var(--t3)}
-
 /* PAID TOGGLE & REMARKS */
 .ptog{font-size:10px;padding:3px 9px;border-radius:6px;border:none;cursor:pointer;font-family:inherit;font-weight:700;transition:all .2s}
 .ptog.paid{background:rgba(16,185,129,.12);color:#10b981}.ptog.paid:hover{background:rgba(239,68,68,.12);color:#ef4444}
@@ -228,7 +210,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
 .rinp:focus{border-color:var(--ac)}
 .sbtn{font-size:10px;padding:3px 9px;border-radius:6px;border:none;background:var(--ac);color:#fff;cursor:pointer;font-family:inherit;font-weight:600}
 .sbtn:hover{opacity:.85}.sbtn.saving{opacity:.4;cursor:not-allowed}
-
 .empty{text-align:center;padding:24px;color:var(--t3);font-size:12px}
 .ss{display:flex;flex-direction:column;align-items:center;justify-content:center;height:55vh;gap:13px;color:var(--t2);text-align:center}
 .spin{width:32px;height:32px;border:2px solid rgba(var(--act),.2);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}
@@ -297,7 +278,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
 .cr-cat{font-size:11px;color:var(--ac);background:rgba(var(--act),.12);padding:2px 8px;border-radius:20px;font-weight:700}
 .cr-x{margin-left:auto;color:var(--t3);cursor:pointer;font-size:12px}
 .cr-x:hover{color:var(--red)}
-
 /* ===== MOBILE ===== */
 @media (max-width:760px){
   html,body{overflow:auto}
@@ -358,7 +338,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
     <div class="pv-scroll" id="pvBody"></div>
   </div>
 </div>
-
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="lbox">
@@ -371,7 +350,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
     <div class="lerr" id="lerr"></div>
   </div>
 </div>
-
 <!-- APP -->
 <div class="app" id="app" style="display:none">
   <aside class="sidebar">
@@ -396,7 +374,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
       </div>
     </div>
   </aside>
-
   <div class="main">
     <!-- STICKY BAR -->
     <div class="sbar" id="sbar">
@@ -406,7 +383,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
       <div class="sb-sep"></div>
       <div class="sb-item" title="All bank credits minus all bank debits (all loaded transactions). Excludes credit-card spend."><span class="sb-label">Net flow</span><span class="sb-val" id="sNet">—</span><span class="sb-sub" id="sNetSub"></span></div>
     </div>
-
     <div class="topbar">
       <div class="ttl" id="vtitle">Overview</div>
       <div class="trt">
@@ -421,7 +397,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
         <button class="tbtn" onclick="loadData()">↻ Refresh</button>
       </div>
     </div>
-
     <div class="content">
       <div id="lstate" class="ss"><div class="spin"></div><p>Fetching your data…</p></div>
       <div id="estate" class="ss" style="display:none">
@@ -429,7 +404,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
         <p id="emsg" style="color:var(--red);font-weight:600"></p>
         <button class="tbtn" onclick="loadData()" style="margin-top:4px">Try again</button>
       </div>
-
       <!-- OVERVIEW -->
       <div id="view-overview" class="view">
         <div class="fbar">
@@ -504,7 +478,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
           <div class="hmwrap" id="hm1"></div>
         </div>
       </div>
-
       <!-- TRANSACTIONS -->
       <div id="view-transactions" class="view">
         <div class="fbar">
@@ -563,14 +536,13 @@ tr.dr.open{background:rgba(var(--act),.06)}
               <button class="exbtn" onclick="exportCSV('txn')">↓ CSV</button>
             </div>
           </div>
-          <div class="twrap"><table><thead><tr><th>Date</th><th>Merchant / UPI</th><th>Bank</th><th>Type</th><th>Amount</th></tr></thead><tbody id="tb"></tbody></table></div>
+          <div class="twrap"><table><thead><tr><th>Date</th><th>Merchant / UPI</th><th>Bank</th><th>Type</th><th>Remarks</th><th>Amount</th></tr></thead><tbody id="tb"></tbody></table></div>
         </div>
         <div class="card">
           <div class="chdr"><span class="ctitle">Spending heatmap</span><span class="chart-hint">Hover for details · click a day to filter</span></div>
           <div class="hmwrap" id="hm3"></div>
         </div>
       </div>
-
       <!-- CREDIT CARDS -->
       <div id="view-creditcard" class="view">
         <div class="fbar">
@@ -640,7 +612,6 @@ tr.dr.open{background:rgba(var(--act),.06)}
           <div class="hmwrap" id="hm4"></div>
         </div>
       </div>
-
       <!-- ANALYTICS -->
       <div id="view-analytics" class="view">
         <div class="fbar">
@@ -692,11 +663,9 @@ tr.dr.open{background:rgba(var(--act),.06)}
           <div class="hmwrap" id="hm2"></div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
-
 <script>
 const API="https://script.google.com/macros/s/AKfycbyHDD2uq8BqJ8w9px8szEnmmOEhrBIhNopSXcLf7efwxovSmG9KNcugkGKta6dhlZct/exec";
 // No secret token in source — it's entered at login and kept only in this browser's local storage.
@@ -706,7 +675,6 @@ let budget=parseFloat(localStorage.getItem(BK))||0;
 const COLS=["#6c63ff","#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#ec4899","#14b8a6"];
 const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const CC_CARDS=["ICICI","HDFC","SBI","Kotak","RBL"];
-
 /* ===== CARD DUE-DATE SETTINGS (configured on the dashboard, stored locally) ===== */
 const DUEK="pl_duedays3";
 let dueCfg=(()=>{try{return JSON.parse(localStorage.getItem(DUEK))||{};}catch(e){return{};}})();  // {ICICI:{day:15}, ...}
@@ -731,11 +699,9 @@ function dueBadge(card){
   else{txt=`Due ${ds} · ${dd}d`;cls="dd-ok";}
   return{txt,cls,days:dd};
 }
-
 /* ===== USER CATEGORY RULES (keyword -> category, stored locally) ===== */
 const CATK="pl_catrules3";
 let catRules=(()=>{try{return JSON.parse(localStorage.getItem(CATK))||[];}catch(e){return[];}})();  // [{kw,cat}]
-
 /* ===== DUPLICATE DETECTION: same amount + same day on BOTH bank and card ===== */
 function computeDuplicates(){
   const map={};
@@ -743,7 +709,6 @@ function computeDuplicates(){
   ccAll.forEach(r=>{r._dup=false;const d=pd(r.date);if(!d)return;const k=ymd(d)+"|"+Math.round(r.amount);(map[k]=map[k]||{bank:[],cc:[]}).cc.push(r);});
   Object.values(map).forEach(g=>{if(g.bank.length&&g.cc.length)[...g.bank,...g.cc].forEach(r=>r._dup=true);});
 }
-
 /* ===== RECURRING / SUBSCRIPTION DETECTION ===== */
 function recurringList(){
   const items=[...txnAll.filter(r=>r.type==="Debit").map(r=>({m:exM(r.raw),date:r.date,amount:r.amount,src:"Bank"})),
@@ -761,7 +726,6 @@ function recurringList(){
   });
   return rec.sort((a,b)=>b.monthly-a.monthly);
 }
-
 /* ===== MONTH vs MONTH BY CATEGORY ===== */
 function momByCategory(){
   const n=new Date(),cm=n.getMonth(),cy=n.getFullYear(),pm=cm===0?11:cm-1,py=cm===0?cy-1:cy;
@@ -772,7 +736,6 @@ function momByCategory(){
   const cats=[...new Set([...Object.keys(cur),...Object.keys(prev)])];
   return cats.map(c=>({cat:c,cur:Math.round(cur[c]||0),prev:Math.round(prev[c]||0)})).sort((a,b)=>(b.cur+b.prev)-(a.cur+a.prev));
 }
-
 /* ===== THEME RUNTIME (charts read concrete colors, not CSS vars) ===== */
 const THK="pl_theme3";
 let TXT="241,245,249";   // chart axis/legend text triplet
@@ -799,10 +762,8 @@ function reRenderActive(){
   else if(v==="creditcard")renderCCView();
   else if(v==="analytics")renderAnalyticsView();
 }
-
 /* TOAST */
 function toast(msg,err=false){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(err?"err":"ok");setTimeout(()=>t.className="toast",2800);}
-
 /* AUTH */
 function initA(){applyTheme(localStorage.getItem(THK)||"dark");const s=localStorage.getItem(SK);if(s){document.getElementById("tok").value=s;document.getElementById("rem").checked=true;}}
 async function login(){
@@ -828,7 +789,6 @@ function logout(){
   document.getElementById("tok").value="";
   document.getElementById("lbtn").disabled=false;document.getElementById("lbtn").textContent="Access Dashboard";
 }
-
 /* NAV */
 document.querySelectorAll(".nit").forEach(el=>{
   el.addEventListener("click",()=>{
@@ -854,7 +814,6 @@ function navTo(v){
   if(v==="creditcard")renderCCView();
   if(v==="analytics")renderAnalyticsView();
 }
-
 /* DATA */
 async function loadData(){
   document.getElementById("lstate").style.display="flex";
@@ -872,7 +831,7 @@ async function loadData(){
   }
 }
 function proc(j){
-  txnAll=j.transactions.slice(1).map(r=>({date:s(r[0]),time:s(r[1]),type:s(r[2]),amount:parseFloat(r[3])||0,bank:s(r[4]),ref:s(r[5]),raw:s(r[6])})).filter(r=>r.date&&r.date!="undefined");
+  txnAll=j.transactions.slice(1).map((r,i)=>({idx:i,date:s(r[0]),time:s(r[1]),type:s(r[2]),amount:parseFloat(r[3])||0,bank:s(r[4]),ref:s(r[5]),raw:s(r[6]),remarks:s(r[7])})).filter(r=>r.date&&r.date!="undefined");
   ccAll=j.cc_expenses.slice(1).map((r,i)=>({idx:i,date:s(r[0]),amount:parseFloat(r[1])||0,card:s(r[2]),paid:s(r[3]),info:s(r[4]),raw:s(r[5]),remarks:s(r[6])})).filter(r=>r.date&&r.date!="undefined");
   computeDuplicates();
   populateYearDropdowns();
@@ -883,7 +842,6 @@ function proc(j){
   updateStickyBar();
   applyF();
 }
-
 /* POPULATE YEAR DROPDOWNS */
 function populateYearDropdowns(){
   const years=[...new Set([...txnAll.map(r=>pd(r.date)?.getFullYear()),...ccAll.map(r=>pd(r.date)?.getFullYear())].filter(Boolean))].sort((a,b)=>b-a);
@@ -894,7 +852,6 @@ function populateYearDropdowns(){
     sel.value=cur;
   });
 }
-
 /* HELPERS */
 function s(v){return v==null?"":String(v);}
 function fmt(n){return"₹"+Number(n).toLocaleString("en-IN",{maximumFractionDigits:2});}
@@ -930,13 +887,11 @@ function cat(raw,info){
   return"Others";
 }
 function exM(raw){if(!raw)return"—";const m=raw.match(/to\s+([^\s]+@[^\s]+)/i)||raw.match(/to\s+(.+?)\s+on\s+\d/i)||raw.match(/at\s+(.+?)[.\s]*(?:avl|bal|if not|$)/i);return m?m[1].trim().substring(0,38):raw.substring(0,38);}
-
 function cOpts(extra={}){
   return{responsive:true,maintainAspectRatio:false,
     plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(5,8,16,.95)",titleColor:"#f1f5f9",bodyColor:AX(.7),borderColor:"rgba(108,99,255,.25)",borderWidth:1,padding:9,cornerRadius:7,callbacks:{label:ctx=>" ₹"+Math.round(ctx.raw).toLocaleString("en-IN")}},...(extra.plugins||{})},
     scales:{x:{ticks:{color:AX(.3),font:{size:9}},grid:{color:GR(.03)},...(extra.x||{})},y:{ticks:{color:AX(.3),font:{size:9},callback:v=>"₹"+Math.round(v).toLocaleString("en-IN")},grid:{color:GR(.03)},...(extra.y||{})}},...extra};
 }
-
 /* PERIOD FILTER */
 function onPeriod(pfId,crId,dfId,dtId){
   const v=document.getElementById(pfId)?.value;
@@ -950,7 +905,6 @@ function onPeriod(pfId,crId,dfId,dtId){
     if(dti&&!dti.value)dti.value=ymd(td);
   }else{if(cr)cr.style.display="none";}
 }
-
 /* Period <-> Year/Month are mutually exclusive, per tab */
 const TABS={
   pf :{cr:"cr" ,df:"df" ,dt:"dt" ,y:"yf" ,m:"mf" ,render:applyF},
@@ -1031,7 +985,6 @@ function onYearMonthSel(pfId){
   }
   c.render();
 }
-
 function getRange(pfId,dfId,dtId,yfId,mfId){
   const p=document.getElementById(pfId)?.value||"thismonth";
   const yr=document.getElementById(yfId)?.value||"all";
@@ -1059,7 +1012,6 @@ function getRange(pfId,dfId,dtId,yfId,mfId){
   }else if(p!=="all")from=ago(parseInt(p));
   return{from,to,yr,mo};
 }
-
 function inR(ds,from,to,yr,mo){
   const d=pd(ds);if(!d)return false;
   if(from&&d<from)return false;
@@ -1068,7 +1020,6 @@ function inR(ds,from,to,yr,mo){
   if(mo!=="all"&&d.getMonth()!==parseInt(mo))return false;
   return true;
 }
-
 function filtered(pfId="pf",dfId="df",dtId="dt",yfId="yf",mfId="mf",bfId="bf",cfId="cf"){
   const{from,to,yr,mo}=getRange(pfId,dfId,dtId,yfId,mfId);
   const bk=document.getElementById(bfId)?.value||"all";
@@ -1079,7 +1030,6 @@ function filtered(pfId="pf",dfId="df",dtId="dt",yfId="yf",mfId="mf",bfId="bf",cf
     from,to
   };
 }
-
 function applyF(){
   const{txn,ccExp}=filtered();
   renderAlert(ccExp);renderKPIs(txn,ccExp);renderBudget(txn,ccExp);
@@ -1087,7 +1037,6 @@ function applyF(){
   rCatList(txn,ccExp,"catlist");rHeat(txnAll,ccAll,"hm1");
   updateStickyBar();
 }
-
 /* STICKY BAR */
 function spendInWindow(from,to){
   const bank=txnAll.filter(r=>r.type==="Debit"&&inR(r.date,from,to,"all","all"));
@@ -1190,7 +1139,6 @@ function saveSettings(){
   closeSettings();toast("✓ Reminders saved");
   if(token){updateStickyBar();applyF();reRenderActive();}
 }
-
 /* ALERT BANNER — total + unpaid cards first, clear cards collapsed (reusable) */
 function renderAlert(ccExp,bannerId="abanner",bodyId="abody",totalId="abTotal"){
   const banner=document.getElementById(bannerId),body=document.getElementById(bodyId);
@@ -1215,7 +1163,6 @@ function renderAlert(ccExp,bannerId="abanner",bodyId="abody",totalId="abTotal"){
   body.innerHTML=dueCards+clearStrip;
   const tot=document.getElementById(totalId);if(tot)tot.innerHTML=`<span>Total due</span>${fmt(totalUnpaid)}`;
 }
-
 /* KPIs */
 function renderKPIs(txn,ccExp){
   const deb=txn.filter(r=>r.type==="Debit").reduce((s,r)=>s+r.amount,0);
@@ -1232,7 +1179,6 @@ function renderKPIs(txn,ccExp){
     <div class="kpi kd clk" onclick="kpiNav('creditcard','No')" title="View unpaid CC →"><div class="klbl">CC unpaid</div><div class="kval" style="color:var(--red)">${fmt(ccU)}</div><div class="ksub neg">${ccExp.filter(r=>r.paid==="No").length} pending</div></div>
     <div class="kpi km clk" onclick="kpiNav('transactions','all')" title="View all transactions →"><div class="klbl">Amount spent</div><div class="kval">${fmt(total)}</div>${momHtml}</div>`;
 }
-
 function getMoM(txn,ccExp){
   const now=new Date(),cm=now.getMonth(),cy=now.getFullYear();
   const pm=cm===0?11:cm-1,py=cm===0?cy-1:cy;
@@ -1240,7 +1186,6 @@ function getMoM(txn,ccExp){
   const prev=txn.filter(r=>r.type==="Debit"&&pd(r.date)?.getMonth()===pm&&pd(r.date)?.getFullYear()===py).reduce((s,r)=>s+r.amount,0)+ccExp.filter(r=>pd(r.date)?.getMonth()===pm&&pd(r.date)?.getFullYear()===py).reduce((s,r)=>s+r.amount,0);
   if(!prev)return null;return Math.round(((cur-prev)/prev)*100);
 }
-
 /* BUDGET */
 function editBudget(){const v=prompt("Monthly budget (₹):",budget||"");if(v===null)return;budget=parseFloat(v)||0;localStorage.setItem(BK,budget);const{txn,ccExp}=filtered();renderBudget(txn,ccExp);}
 function renderBudget(){
@@ -1256,7 +1201,6 @@ function renderBudget(){
   document.getElementById("bsp").textContent=fmt(sp)+" of "+fmt(budget);
   document.getElementById("bli").textContent=Math.round(pct)+"% used · "+fmt(Math.max(0,budget-sp))+" remaining";
 }
-
 /* CHARTS */
 function rDailyChart(txn){
   dc("cTxn");const m={};
@@ -1288,7 +1232,6 @@ function rCatList(txn,ccExp,id){
   const mx=sorted[0]?sorted[0][1]:1;
   document.getElementById(id).innerHTML=sorted.map(([n,v],i)=>`<div class="catitem"><span class="catnm">${n}</span><div class="catbg"><div class="catfill" style="width:${Math.round((v/mx)*100)}%;background:${gc(i)}"></div></div><span class="catamt">${fmt(v)}</span></div>`).join("");
 }
-
 /* INTERACTIVE HEATMAP — larger cells, click-a-day to filter */
 const HM_PF={hm1:"pf",hm2:"apf",hm3:"tpf",hm4:"cpf"};  // which tab each heatmap filters
 function hmFilterDay(tid,k){
@@ -1364,7 +1307,6 @@ function rHeat(txn,ccExp,tid,days=90){
     cell.addEventListener("click",()=>{tip.style.opacity="0";hmFilterDay(cell.dataset.tid,cell.dataset.k);});
   });
 }
-
 /* WRITE-BACK */
 async function writeBack(action,extra){
   if(!token)throw new Error("Not signed in");
@@ -1392,14 +1334,24 @@ async function saveRemarks(idx,val,btnEl){
   if(btnEl.classList.contains("saving"))return;
   btnEl.classList.add("saving");
   try{
-    await writeBack("updateRemarks",{rowIndex:idx,remarks:val});
+    await writeBack("updateRemarks",{rowIndex:idx,remarks:val,sheet:"cc"});
     ccAll.find(r=>r.idx===idx).remarks=val;
     toast("✓ Remarks saved");
     rCT();
   }catch(e){toast("Save failed: "+e.message,true);}
   finally{btnEl.classList.remove("saving");}
 }
-
+async function saveTxnRemarks(idx,val,btnEl){
+  if(btnEl.classList.contains("saving"))return;
+  btnEl.classList.add("saving");
+  try{
+    await writeBack("updateRemarks",{rowIndex:idx,remarks:val,sheet:"txn"});
+    txnAll.find(r=>r.idx===idx).remarks=val;
+    toast("✓ Remarks saved");
+    rTT();
+  }catch(e){toast("Save failed: "+e.message,true);}
+  finally{btnEl.classList.remove("saving");}
+}
 /* TRANSACTIONS VIEW */
 function renderTxnView(){
   const{txn}=filtered("tpf","tdf","tdt","tyf","tmf","tbf","cf");
@@ -1445,14 +1397,28 @@ function rTT(){
   const{txn}=filtered("tpf","tdf","tdt","tyf","tmf","tbf","cf");
   const q=(document.getElementById("tsrch")?.value||"").toLowerCase();
   let rows=tF==="all"?txn:txn.filter(r=>r.type===tF);
-  if(q)rows=rows.filter(r=>(r.raw+r.bank+r.ref+r.amount).toLowerCase().includes(q));
+  if(q)rows=rows.filter(r=>(r.raw+r.bank+r.ref+r.amount+(r.remarks||"")).toLowerCase().includes(q));
   rows=[...rows].sort((a,b)=>pdt(b)-pdt(a));
   const body=document.getElementById("tb");
-  if(!rows.length){body.innerHTML=`<tr><td colspan="5" class="empty">No transactions found</td></tr>`;return;}
-  body.innerHTML=rows.map((r,i)=>{const open=exT===i;return`<tr class="dr ${open?"open":""}" onclick="togT(${i})"><td class="dc2">${fmtD(r.date)}${r.time?`<span class="rtime">${r.time}</span>`:""}</td><td class="mc">${exM(r.raw)}${r._dup?`<span class="dupb" title="Possible duplicate — same amount &amp; day also on a card">⚠ dup?</span>`:""}<span class="btag">${r.bank}</span></td><td style="color:var(--t3);font-size:10px">${r.bank}</td><td><span class="badge ${r.type==="Debit"?"bd":"bc"}">${r.type}</span></td><td class="${r.type==="Debit"?"amd":"amc"}">${r.type==="Debit"?"−":"+"}${fmt(r.amount)}</td></tr>${open?`<tr><td colspan="5"><div class="rawbox"><div class="rawlbl">Raw SMS</div><div class="rawtxt">${r.raw||"—"}</div></div></td></tr>`:""}`}).join("");
+  if(!rows.length){body.innerHTML=`<tr><td colspan="6" class="empty">No transactions found</td></tr>`;return;}
+  body.innerHTML=rows.map((r,i)=>{const open=exT===i;return`<tr class="dr ${open?"open":""}" onclick="togT(${i})">
+    <td class="dc2">${fmtD(r.date)}${r.time?`<span class="rtime">${r.time}</span>`:""}</td>
+    <td class="mc">${exM(r.raw)}${r._dup?`<span class="dupb" title="Possible duplicate — same amount &amp; day also on a card">⚠ dup?</span>`:""}<span class="btag">${r.bank}</span></td>
+    <td style="color:var(--t3);font-size:10px">${r.bank}</td>
+    <td><span class="badge ${r.type==="Debit"?"bd":"bc"}">${r.type}</span></td>
+    <td style="font-size:10px;color:var(--t2);max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.remarks&&r.remarks!="undefined"?r.remarks:"—"}</td>
+    <td class="${r.type==="Debit"?"amd":"amc"}">${r.type==="Debit"?"−":"+"}${fmt(r.amount)}</td>
+  </tr>
+  ${open?`<tr><td colspan="6"><div class="rawbox">
+    <div class="rawlbl">Raw SMS</div><div class="rawtxt" style="margin-bottom:10px">${r.raw||"—"}</div>
+    <div class="rawlbl" style="margin-bottom:5px">Edit remarks</div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <input class="rinp" id="tri${r.idx}" value="${r.remarks&&r.remarks!="undefined"?r.remarks:""}" placeholder="Add a note…" onclick="event.stopPropagation()"/>
+      <button class="sbtn" onclick="event.stopPropagation();saveTxnRemarks(${r.idx},document.getElementById('tri${r.idx}').value,this)">Save</button>
+    </div>
+  </div></td></tr>`:""}`}).join("");
 }
 function togT(i){exT=exT===i?null:i;rTT();}
-
 /* CC VIEW */
 function renderCCView(){
   const{ccExp}=filtered("cpf","cdf","cdt","cyf","cmf","bf","ccf");
@@ -1503,7 +1469,6 @@ function rCT(){
   </div></td></tr>`:""}`;}).join("");
 }
 function togC(i){exC=exC===i?null:i;rCT();}
-
 /* ANALYTICS */
 function renderAnalyticsView(){
   const{txn,ccExp}=filtered("apf","adf","adt","ayf","amf","bf","cf");
@@ -1562,15 +1527,13 @@ function rBvC(txn,ccExp){
     {label:"CC",data:labs.map(k=>Math.round(m[k]?.c||0)),backgroundColor:co("#3b82f6",.65),borderRadius:3}
   ]},options:cOpts({plugins:{tooltip:{mode:"index",intersect:false}}})});
 }
-
 /* CSV EXPORT */
 function exportCSV(type){
   const{txn,ccExp}=filtered();let csv="",fn="";
-  if(type==="txn"){csv="Date,Time,Type,Amount,Bank,Ref,Merchant\n";txn.forEach(r=>{csv+=`"${r.date}","${r.time}","${r.type}","${r.amount}","${r.bank}","${r.ref}","${exM(r.raw)}"\n`;});fn="bank_transactions.csv";}
+  if(type==="txn"){csv="Date,Time,Type,Amount,Bank,Ref,Merchant,Remarks\n";txn.forEach(r=>{csv+=`"${r.date}","${r.time}","${r.type}","${r.amount}","${r.bank}","${r.ref}","${exM(r.raw)}","${r.remarks||""}"\n`;});fn="bank_transactions.csv";}
   else{csv="Date,Merchant,Card,Paid,Amount,Remarks\n";ccExp.forEach(r=>{csv+=`"${r.date}","${r.info}","${r.card}","${r.paid}","${r.amount}","${r.remarks}"\n`;});fn="cc_expenses.csv";}
   const a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(csv);a.download=fn;a.click();
 }
-
 initA();
 </script>
 </body>
